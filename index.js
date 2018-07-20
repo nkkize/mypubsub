@@ -1,16 +1,15 @@
-// Imports the Google Cloud client library
 const PubSub = require('@google-cloud/pubsub');
-
-// Your Google Cloud Platform project ID
-const projectId = 'myProject';
+const PUBSUB_EMULATOR_HOST = "http://localhost:8085";
+const PUBSUB_PROJECT_ID = "minions-f5125";
 
 // Instantiates a client
 const pubsubClient = new PubSub({
-  projectId: projectId,
+  projectId: PUBSUB_PROJECT_ID,
+  apiEndpoint: PUBSUB_EMULATOR_HOST
 });
 
-// The name for the new topic
-const topicName = 'myTopic';
+const topicName = 'messaging-datapublish-transmission';
+const subscriptionName = 'messaging-datapublish-transmission';
 
 // Creates the new topic
 pubsubClient
@@ -23,10 +22,10 @@ pubsubClient
     console.error('ERROR:', err);
   });
 
-
+// Creates subscription for the topc
 pubsubClient
     .topic(topicName)
-    .createSubscription("mySub")
+    .createSubscription(subscriptionName)
     .then(results => {
         const subscription = results[0];
         console.log(`Subscription ${subscription.name} created.`);
@@ -34,4 +33,3 @@ pubsubClient
     .catch(err => {
         console.error('ERROR:', err);
     });
-// [END pubsub_create_subscription]
